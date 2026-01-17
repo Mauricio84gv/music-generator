@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 Music Generator - Generador de Música con IA</title>
+    <meta name="description" content="Genera música original usando Inteligencia Artificial con MusicGen de Meta">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="emoji">🎵</span>
+                    Music Generator
+                </h1>
+                <p class="subtitle">
+                    Genera música original con Inteligencia Artificial
+                </p>
+                <p class="description">
+                    Powered by <strong>MusicGen</strong> de Meta AI
+                </p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Generator Form -->
+            <section class="card generator-card">
+                <h2 class="card-title">Crear Música</h2>
+                
+                <form id="generatorForm" class="generator-form">
+                    <!-- Prompt Input -->
+                    <div class="form-group">
+                        <label for="prompt" class="form-label">
+                            Describe la música que deseas generar
+                        </label>
+                        <textarea 
+                            id="prompt" 
+                            name="prompt" 
+                            class="form-input form-textarea" 
+                            rows="4"
+                            placeholder="Ejemplo: upbeat electronic dance music with synthesizers"
+                            required
+                            maxlength="500"
+                        ></textarea>
+                        <small class="form-help">
+                            Describe el estilo, instrumentos, tempo y ambiente. Máximo 500 caracteres.
+                        </small>
+                    </div>
+
+                    <!-- Duration Selector -->
+                    <div class="form-group">
+                        <label for="duration" class="form-label">
+                            Duración (segundos)
+                        </label>
+                        <div class="input-with-value">
+                            <input 
+                                type="range" 
+                                id="duration" 
+                                name="duration" 
+                                class="form-range" 
+                                min="5" 
+                                max="30" 
+                                value="10"
+                                step="1"
+                            >
+                            <span id="durationValue" class="range-value">10s</span>
+                        </div>
+                    </div>
+
+                    <!-- Model Selector -->
+                    <div class="form-group">
+                        <label for="model" class="form-label">
+                            Modelo de IA
+                        </label>
+                        <select id="model" name="model" class="form-input form-select">
+                            <option value="small" selected>Small - Rápido (300M parámetros)</option>
+                            <option value="medium">Medium - Balanceado (1.5B parámetros)</option>
+                            <option value="large">Large - Mejor calidad (3.3B parámetros)</option>
+                        </select>
+                        <small class="form-help">
+                            Modelos más grandes generan mejor calidad pero tardan más tiempo.
+                        </small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary" id="generateBtn">
+                        <span class="btn-text">🎵 Generar Música</span>
+                        <span class="btn-loading" style="display: none;">
+                            <span class="spinner"></span>
+                            Generando...
+                        </span>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="card results-card" style="display: none;">
+                <h2 class="card-title">Tu Música Generada</h2>
+                
+                <!-- Success State -->
+                <div id="successState" style="display: none;">
+                    <div class="audio-player">
+                        <audio id="audioPlayer" controls class="audio-element">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                    </div>
+                    
+                    <div class="result-actions">
+                        <button id="downloadBtn" class="btn btn-secondary">
+                            📥 Descargar
+                        </button>
+                        <button id="newGenerationBtn" class="btn btn-outline">
+                            🔄 Generar Nueva
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="error-message" style="display: none;">
+                    <div class="error-icon">⚠️</div>
+                    <p id="errorMessage" class="error-text"></p>
+                    <button id="retryBtn" class="btn btn-outline">
+                        🔄 Reintentar
+                    </button>
+                </div>
+            </section>
+
+            <!-- Examples Section -->
+            <section class="card examples-card">
+                <h2 class="card-title">Ejemplos de Prompts</h2>
+                <div class="examples-grid">
+                    <button class="example-item" data-prompt="upbeat electronic dance music with synthesizers">
+                        🎹 EDM con sintetizadores
+                    </button>
+                    <button class="example-item" data-prompt="calm piano melody for meditation">
+                        🧘 Piano tranquilo para meditación
+                    </button>
+                    <button class="example-item" data-prompt="epic orchestral music with drums">
+                        🎻 Música orquestal épica
+                    </button>
+                    <button class="example-item" data-prompt="lo-fi hip hop beats for studying">
+                        📚 Lo-fi hip hop para estudiar
+                    </button>
+                    <button class="example-item" data-prompt="acoustic guitar with gentle vocals">
+                        🎸 Guitarra acústica suave
+                    </button>
+                    <button class="example-item" data-prompt="energetic rock music with electric guitar">
+                        🎸 Rock energético
+                    </button>
+                </div>
+            </section>
+
+            <!-- Info Section -->
+            <section class="card info-card">
+                <h2 class="card-title">Información</h2>
+                <div class="info-content">
+                    <div class="info-item">
+                        <span class="info-icon">⚡</span>
+                        <div class="info-text">
+                            <strong>Primera generación:</strong> Puede tardar más tiempo mientras se descarga el modelo de IA.
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🎨</span>
+                        <div class="info-text">
+                            <strong>Propiedad:</strong> Eres dueño de toda la música que generes.
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🚀</span>
+                        <div class="info-text">
+                            <strong>GPU:</strong> Si tienes GPU disponible, la generación será mucho más rápida.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p class="footer-text">
+                    Powered by <a href="https://github.com/facebookresearch/audiocraft" target="_blank" rel="noopener noreferrer">MusicGen</a> de Meta AI
+                </p>
+                <p class="footer-text">
+                    Open Source • MIT License • La música generada es de tu propiedad
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
