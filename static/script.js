@@ -272,6 +272,7 @@ if (document.readyState === 'loading') {
 // ===================================
 
 // Prevenir recarga accidental durante generación
+// Error messages are in Spanish to match the UI language
 window.addEventListener('beforeunload', (e) => {
   if (generateBtn.disabled) {
     e.preventDefault();

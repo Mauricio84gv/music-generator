@@ -76,11 +76,22 @@ pip install -r requirements.txt
 
 ### 4. Ejecutar la Aplicación
 
+**Desarrollo (con debug activado):**
 ```bash
 python app.py
 ```
 
+**Producción (sin debug):**
+```bash
+export FLASK_DEBUG=False  # En Linux/macOS
+# o
+set FLASK_DEBUG=False  # En Windows
+python app.py
+```
+
 La aplicación estará disponible en: `http://localhost:5000`
+
+> **Nota de Seguridad**: En producción, siempre ejecuta con `FLASK_DEBUG=False` y considera usar un servidor WSGI como Gunicorn.
 
 ## 📖 Uso de la Aplicación
 

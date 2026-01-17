@@ -216,4 +216,8 @@ if __name__ == '__main__':
     print("Iniciando servidor...")
     print("=" * 60)
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Get debug mode from environment variable (default True for development)
+    # In production, set FLASK_DEBUG=False
+    debug_mode = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'
+    
+    app.run(debug=debug_mode, host='0.0.0.0', port=5000)
